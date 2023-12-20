@@ -1,0 +1,67 @@
+#include <stdio.h>
+#define n 5
+int stac[n];
+int top=-1;
+
+
+void push(){
+    if( top>=n){
+        printf("stack is full, overflow\n");
+        return;
+    }
+    top++;
+    int item;
+    printf("enter the number to be inserted\t");
+    scanf("%d",&item);
+    stac[top]=item;
+}
+void pop(){
+    if( top==-1){
+        printf("stack is empty, underflow\n");
+        return;
+    }
+    int data=stac[top];
+    printf("removing the %d element\t",top);
+    printf("removing %d\n",data);
+    top--;
+}
+void display(){
+    int i;
+    printf("the given stac is :\n");
+    for(i=top;i>=0;i--){
+        printf("%d\t",stac[i]);
+    }
+}
+
+int main()
+{
+    int c;
+    while(1){
+        printf("enter 1 for push, 2 for pop and 3 for displaying the stack and 4 for exiting\n");
+        printf("enter your choice\t");
+        scanf("%d",&c);
+        if(c==1){
+            push();
+        }
+        else if(c==2){
+            pop();
+        }
+        else if(c==3){
+            display();  
+        }
+        else if(c==4) {
+            printf("Exiting!");
+            exit(0);
+        }else{
+            printf("Invalid choice,please enter a valid choice!\n");
+        }
+    }
+    return 0;
+}
+
+
+
+OUTPUT:
+
+
+
