@@ -99,7 +99,7 @@ getpri (char op)
   else if ((op == '+') || (op == '-'))
     return 0;
   else
-    return -1;			// Return -1 for unknown operators
+    return -1;			
 }
 
 void
