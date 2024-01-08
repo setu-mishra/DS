@@ -1,0 +1,95 @@
+#include <stdio.h>
+
+#define MAX_SIZE 5
+
+int queue[MAX_SIZE];
+int front = -1, rear = -1;
+
+// Function to check if the queue is empty
+int isEmpty() {
+    return front == -1 && rear == -1;
+}
+
+// Function to check if the queue is full
+int isFull() {
+    return (rear + 1) % MAX_SIZE == front;
+}
+
+// Function to insert an element into the circular queue
+void insert(int item) {
+    if (isFull()) {
+        printf("Queue Overflow: Cannot insert element %d\n", item);
+        return;
+    }
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % MAX_SIZE;
+    }
+
+    queue[rear] = item;
+    printf("Element %d inserted successfully\n", item);
+}
+
+// Function to delete an element from the circular queue
+void delete() {
+    if (isEmpty()) {
+        printf("Queue Underflow: Cannot delete from an empty queue\n");
+        return;
+    }
+
+    printf("Element %d deleted successfully\n", queue[front]);
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % MAX_SIZE;
+    }
+}
+
+// Function to display the elements of the circular queue
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    printf("Elements in the queue: ");
+    int i = front;
+    do {
+        printf("%d ", queue[i]);
+        i = (i + 1) % MAX_SIZE;
+    } while (i != (rear + 1) % MAX_SIZE);
+
+    printf("\n");
+}
+
+int main() {
+    insert(1);
+    insert(2);
+    insert(3);
+    insert(4);
+    insert(5);
+
+    // Uncomment the line below to test queue overflow condition
+    // insert(6);
+
+    display();
+
+    delete();
+    delete();
+    delete();
+
+    // Uncomment the line below to test queue underflow condition
+    // delete();
+
+    display();
+
+    insert(6);
+    insert(7);
+
+    display();
+
+    return 0;
+}
