@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+// Structure to represent a node in the graph
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Structure to represent the graph
+struct Graph {
+    int numVertices;
+    struct Node* adjLists[MAX_VERTICES];
+    int visited[MAX_VERTICES];
+};
+
+// Function to create a new graph
+struct Graph* createGraph(int vertices) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->numVertices = vertices;
+
+    for (int i = 0; i < vertices; i++) {
+        graph->adjLists[i] = NULL;
+        graph->visited[i] = 0;
+    }
+
+    return graph;
+}
+
+// Function to add an edge to the graph
+void addEdge(struct Graph* graph, int src, int dest) {
+    // Add edge from src to dest
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = dest;
+    newNode->next = graph->adjLists[src];
+    graph->adjLists[src] = newNode;
+
+    // Since it's an undirected graph, add an edge from dest to src as well
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = src;
+    newNode->next = graph->adjLists[dest];
+    graph->adjLists[dest] = newNode;
+}
+
+// Function to perform DFS traversal
+void DFS(struct Graph* graph, int vertex) {
+    graph->visited[vertex] = 1;
+
+    struct Node* temp = graph->adjLists[vertex];
+    while (temp != NULL) {
+        int adjVertex = temp->data;
+        if (!graph->visited[adjVertex]) {
+            DFS(graph, adjVertex);
+        }
+        temp = temp->next;
+    }
+}
+
+// Function to check if the graph is connected
+int isConnected(struct Graph* graph) {
+    // Perform DFS traversal starting from vertex 0
+    DFS(graph, 0);
+
+    // Check if all vertices are visited after DFS traversal
+    for (int i = 0; i < graph->numVertices; i++) {
+        if (!graph->visited[i]) {
+            return 0; // Graph is not connected
+        }
+    }
+    return 1; // Graph is connected
+}
+
+int main() {
+    int numVertices, numEdges;
+    printf("Enter the number of vertices and edges: ");
+    scanf("%d %d", &numVertices, &numEdges);
+
+    struct Graph* graph = createGraph(numVertices);
+
+    printf("Enter the edges (src dest):\n");
+    for (int i = 0; i < numEdges; i++) {
+        int src, dest;
+        scanf("%d %d", &src, &dest);
+        addEdge(graph, src, dest);
+    }
+
+    if (isConnected(graph)) {
+        printf("The graph is connected.\n");
+    } else {
+        printf("The graph is not connected.\n");
+    }
+
+    return 0;
+}
